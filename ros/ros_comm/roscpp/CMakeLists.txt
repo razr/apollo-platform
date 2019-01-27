@@ -228,15 +228,18 @@ install(TARGETS listener
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION})
 
 #unit test
+if(CATKIN_ENABLE_TESTING)
 catkin_add_gtest(test_shm
   test/test_shm.cpp
   src/libros/sharedmem_transport/sharedmem_block.cpp
   src/libros/sharedmem_transport/sharedmem_publisher_impl.cpp
   src/libros/sharedmem_transport/sharedmem_segment.cpp
   src/libros/sharedmem_transport/sharedmem_util.cpp)
-  
+
 target_link_libraries(test_shm 
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES} 
   roscpp
   gtest)
+endif()
+
