@@ -37,7 +37,7 @@ function build() {
     mkdir -p build/install
     cd build
 
-    cmake -DTHIRDPARTY=ON -DCMAKE_INSTALL_PREFIX=./install ..
+    cmake -DTHIRDPARTY=ON -DCMAKE_CXX_FLAGS=-DASIO_DISABLE_STD_STRING_VIEW=1 -DCMAKE_INSTALL_PREFIX=./install ..
     make
     make install
 
