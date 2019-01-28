@@ -1,0 +1,22 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 991591a6..a179f0d3 100644
+@@ -195,6 +193,19 @@ find_eprosima_package(fastcdr)
+ find_eprosima_thirdparty(asio)
+ find_eprosima_thirdparty(tinyxml2)
+ 
++if(VXWORKS)
++	execute_process(
++		COMMAND git checkout asio-1-12-2
++		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/thirdparty/asio/asio
++		RESULT_VARIABLE EXECUTE_RESULT
++		)
++	execute_process(
++		COMMAND patch -p1
++		INPUT_FILE ../../../../ASIO-1-12-0.patch
++		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/thirdparty/asio/asio
++		RESULT_VARIABLE EXECUTE_RESULT
++		)
++endif()
+ if(ANDROID)
+     find_eprosima_thirdparty(android-ifaddrs)
+ endif()
