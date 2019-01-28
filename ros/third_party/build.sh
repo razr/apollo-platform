@@ -33,12 +33,27 @@ function build() {
 
     #patch
     patch -p1 < ../FastRTPS_1.4.0.patch
+    patch -p1 < ../FastRTPS-VxWorks.patch
+
+    # checkout asio to 1.12
+    cd thirdparty/asio/asio
+    # git checkout asio-1-12-2
+    # patch asio
+    # patch -p1 < ../../../../ASIO-1-12-0.patch
+
+    # patch Fast-CDR
+    cd ../../fastcdr
+    patch -p1 < ../../../0001-use-stdlib-for-VxWorks.patch
+
+    # patch Fast-RTPS
+    cd ../..
+    patch -p1 < ../0002-undef-NONE.patch
 
     mkdir -p build/install
     cd build
 
-    cmake -DTHIRDPARTY=ON -DCMAKE_CXX_FLAGS=-DASIO_DISABLE_STD_STRING_VIEW=1 -DCMAKE_INSTALL_PREFIX=./install ..
-    make
+    cmake -DTHIRDPARTY=ON -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_TOOLCHAIN_FILE=$VSB_DIR/buildspecs/cmake/rtp.cmake -DBUILD_OPTION=-DCMAKE_TOOLCHAIN_FILE=$VSB_DIR/buildspecs/cmake/rtp.cmake ..
+    make VERBOSE=1
     make install
 
     cd ../../
@@ -51,7 +66,7 @@ function build() {
     cp -fr Fast-RTPS/build/install/lib/* ${INSTALL_PATH}/lib/
     cp -fr Fast-RTPS/build/external/install/lib/* ${INSTALL_PATH}/lib/
 
-    rm -rf Fast-RTPS
+    # rm -rf Fast-RTPS
     ln -rs fast-rtps_$MACHINE_ARCH fast-rtps
 }
 
